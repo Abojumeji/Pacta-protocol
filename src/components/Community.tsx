@@ -35,7 +35,9 @@ export default function Community() {
           </a>
 
           <a
-            href="#"
+            href="https://x.com/PactaLab"
+            target="_blank"
+            rel="noopener noreferrer"
             className="glow-card group rounded-2xl border border-border/50 bg-surface/50 p-8 flex flex-col items-center gap-4 hover:border-foreground/30"
           >
             <div className="w-14 h-14 rounded-xl bg-foreground/5 flex items-center justify-center group-hover:bg-foreground/10 transition-colors">

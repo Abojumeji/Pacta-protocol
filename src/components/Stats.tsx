@@ -15,9 +15,9 @@ const stats = [
     description: "SUI + USDC + NFTs simultaneously",
   },
   {
-    value: "100%",
-    label: "On-Chain",
-    description: "No off-chain dependencies",
+    value: "Open",
+    label: "Execution Model",
+    description: "Bots, AI agents, or anyone can settle",
   },
 ];
 

@@ -12,19 +12,23 @@ export default function Developers() {
               Build on <span className="gradient-text">Pacta</span>
             </p>
             <p className="text-text-muted text-sm sm:text-lg leading-relaxed mb-6 sm:mb-8">
-              Pacta is designed as composable infrastructure. The Agreement object has{" "}
+              Pacta v4 is built for protocol-to-protocol composability. The{" "}
+              <code className="text-accent font-mono text-sm bg-accent/10 px-1.5 py-0.5 rounded">SettlementReceipt</code>{" "}
+              hot potato lets you chain settlement into downstream PTB logic atomically.
+              Agreement objects carry{" "}
               <code className="text-accent font-mono text-sm bg-accent/10 px-1.5 py-0.5 rounded">key + store</code>{" "}
-              abilities — wrap it, share it, or embed it in your own contracts.
-              Use the Composability API to extract balances and objects programmatically.
+              — wrap them, share them, or embed them in your own contracts.
             </p>
 
             <div className="space-y-4 mb-8">
               {[
                 "create_agreement() — returns Agreement for wrapping or sharing",
                 "deposit_coin<T>() / deposit_object<V>() — multi-asset escrow",
-                "extract_coin_balance<T>() — programmatic fund routing",
-                "extract_object<V>() — programmatic object routing",
-                "Configurable bitmask: 5 condition types, any combination",
+                "settle_with_receipt() — returns SettlementReceipt (hot potato)",
+                "attach_hook<H>() / extract_hook_with_receipt<H>() — settlement hooks",
+                "set_party_b() — fill open agreements (listing / RFQ patterns)",
+                "conclude_dispute() — per-asset arbiter resolution, STATE_DISPUTE_RESOLVED",
+                "PactaRegistry — on-chain protocol stats (settled, cancelled, disputed)",
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -69,30 +73,30 @@ export default function Developers() {
               <div className="bg-[#0d1117] p-3 sm:p-6 overflow-x-auto">
                 <pre className="text-[11px] sm:text-sm font-mono leading-relaxed">
                   <code>
-                    <span className="text-purple-400">{"/// Create a P2P swap agreement"}</span>{"\n"}
-                    <span className="text-blue-400">let</span> agreement = <span className="text-yellow-300">create_agreement</span>{"("}{"\n"}
-                    {"    "}party_a: <span className="text-emerald-400">@alice</span>,{"\n"}
-                    {"    "}party_b: <span className="text-emerald-400">@bob</span>,{"\n"}
-                    {"    "}arbiter: <span className="text-emerald-400">@0x0</span>,{"\n"}
-                    {"    "}release_conditions: <span className="text-orange-400">3</span>,{"\n"}
-                    {"    "}  <span className="text-purple-400">{"// COND_A_DEPOSITED | COND_B_DEPOSITED"}</span>{"\n"}
-                    {"    "}terms_hash: <span className="text-emerald-400">b&quot;swap-v1&quot;</span>,{"\n"}
-                    {"    "}expiry_ms: <span className="text-orange-400">0</span>,{"\n"}
-                    {"    "}unlock_time_ms: <span className="text-orange-400">0</span>,{"\n"}
-                    {"    "}metadata: <span className="text-emerald-400">vector[]</span>,{"\n"}
+                    <span className="text-purple-400">{"/// v4: Open agreement — any taker can fill"}</span>{"\n"}
+                    <span className="text-blue-400">let mut</span> agr = <span className="text-yellow-300">create_agreement</span>{"("}{"\n"}
+                    {"    "}party_a: <span className="text-emerald-400">@maker</span>,{"\n"}
+                    {"    "}party_b: <span className="text-emerald-400">@0x0</span>,{"  "}<span className="text-purple-400">{"// open slot"}</span>{"\n"}
+                    {"    "}release_conditions: <span className="text-orange-400">3</span>,{"  "}<span className="text-purple-400">{"// A|B deposited"}</span>{"\n"}
                     {"    "}clock, ctx,{"\n"}
                     {");"}{"\n\n"}
-                    <span className="text-purple-400">{"/// Alice deposits 100 SUI"}</span>{"\n"}
-                    <span className="text-yellow-300">deposit_coin</span>{"<"}SUI{">"}{"("}{"\n"}
-                    {"    "}&<span className="text-blue-400">mut</span> agreement, sui_coin, clock, ctx{"\n"}
+                    <span className="text-purple-400">{"/// Attach a settlement hook"}</span>{"\n"}
+                    <span className="text-yellow-300">attach_hook</span>{"("}&<span className="text-blue-400">mut</span> agr,{"\n"}
+                    {"    "}NotifyHook {"{"} target: <span className="text-emerald-400">@oracle</span> {"}"}, ctx{"\n"}
                     {");"}{"\n\n"}
-                    <span className="text-purple-400">{"/// Bob deposits 500 USDC"}</span>{"\n"}
-                    <span className="text-purple-400">{"/// → auto-settles! Both conditions met"}</span>{"\n"}
-                    <span className="text-yellow-300">deposit_coin</span>{"<"}USDC{">"}{"("}{"\n"}
-                    {"    "}&<span className="text-blue-400">mut</span> agreement, usdc_coin, clock, ctx{"\n"}
-                    {");"}{"\n"}
-                    <span className="text-purple-400">{"// Agreement is now STATE_SETTLED"}</span>{"\n"}
-                    <span className="text-purple-400">{"// Alice claims Bob's USDC, Bob claims Alice's SUI"}</span>
+                    <span className="text-purple-400">{"/// Taker fills the open slot"}</span>{"\n"}
+                    <span className="text-yellow-300">set_party_b</span>{"("}&<span className="text-blue-400">mut</span> agr, ctx{")"};{"\n\n"}
+                    <span className="text-purple-400">{"/// Both deposit → conditions met"}</span>{"\n"}
+                    <span className="text-purple-400">{"/// settle_with_receipt() returns hot potato"}</span>{"\n"}
+                    <span className="text-blue-400">let</span> receipt = <span className="text-yellow-300">settle_with_receipt</span>{"("}{"\n"}
+                    {"    "}&<span className="text-blue-400">mut</span> agr, clock, ctx{"\n"}
+                    {");"}{"\n\n"}
+                    <span className="text-purple-400">{"/// Chain into downstream PTB — atomically"}</span>{"\n"}
+                    oracle::<span className="text-yellow-300">on_settle</span>{"("}{"\n"}
+                    {"    "}<span className="text-yellow-300">extract_hook_with_receipt</span>{"<"}NotifyHook{">"}{"("}{"\n"}
+                    {"        "}&<span className="text-blue-400">mut</span> agr, receipt, ctx{")"},{"\n"}
+                    {"    "}&<span className="text-blue-400">mut</span> oracle_state, ctx{"\n"}
+                    {")"};{"  "}<span className="text-purple-400">{"// receipt consumed ✓"}</span>
                   </code>
                 </pre>
               </div>

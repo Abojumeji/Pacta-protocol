@@ -30,7 +30,7 @@ const steps = [
     step: "04",
     title: "Auto-Settlement",
     description:
-      "When all conditions are met, the agreement settles automatically with cross-delivery: Party A's assets go to B and B's to A. Trustless.",
+      "When all conditions are met, any executor (bot, AI agent, or party) triggers settlement. Assets cross-deliver trustlessly. settle_with_receipt() returns a SettlementReceipt hot potato — chain it into downstream PTB logic to route funds, notify oracles, or trigger protocol callbacks atomically.",
     color: "text-emerald-400",
     borderColor: "border-emerald-400/30",
     bgColor: "bg-emerald-400/5",
@@ -90,12 +90,24 @@ export default function HowItWorks() {
         </div>
 
         {/* Dispute Path Note */}
-        <div className="mt-16 text-center">
-          <div className="inline-flex items-center gap-3 rounded-xl border border-border/50 bg-surface/50 px-6 py-4 text-sm text-text-muted">
-            <svg className="w-5 h-5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <div className="mt-16 grid sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
+          <div className="inline-flex items-start gap-3 rounded-xl border border-amber-400/30 bg-amber-400/5 px-6 py-4 text-sm text-text-muted">
+            <svg className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
             </svg>
-            Disputes? Either party can raise one. The arbiter resolves with full-split precision or per-asset assignment.
+            <div>
+              <p className="font-semibold text-amber-400 mb-1">Dispute Branch</p>
+              Either party can raise a dispute. The arbiter calls <code className="text-amber-300 font-mono text-xs bg-amber-500/10 px-1 rounded">conclude_dispute()</code> — resolving each asset and coin type independently with basis-point precision, then settling or returning. Outcome: <span className="font-mono text-xs text-amber-300">STATE_DISPUTE_RESOLVED</span>.
+            </div>
+          </div>
+          <div className="inline-flex items-start gap-3 rounded-xl border border-violet-400/30 bg-violet-400/5 px-6 py-4 text-sm text-text-muted">
+            <svg className="w-5 h-5 text-violet-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+            <div>
+              <p className="font-semibold text-violet-400 mb-1">Permissionless Execution</p>
+              Settlement can be triggered by anyone — bots, AI agents, or any third-party executor. No reliance on a specific party to "push" the transaction. Protocol liveness is guaranteed.
+            </div>
           </div>
         </div>
       </div>
