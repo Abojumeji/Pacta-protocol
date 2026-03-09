@@ -59,7 +59,7 @@ export default function Navbar() {
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="https://github.com"
+              href="https://pacta.mintlify.app"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-text-muted hover:text-foreground transition-colors"
@@ -122,7 +122,9 @@ export default function Navbar() {
             ))}
             <div className="pt-4 space-y-3">
               <a
-                href="#"
+                href="https://pacta.mintlify.app"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
                 className="block text-base text-text-muted hover:text-foreground transition-colors py-3"
               >

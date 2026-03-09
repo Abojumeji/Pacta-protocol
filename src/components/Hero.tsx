@@ -9,7 +9,7 @@ export default function Hero() {
         {/* Badge */}
         <div className="animate-fade-in-up inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm text-accent mb-6 sm:mb-8">
           <span className="inline-block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent animate-pulse" />
-          Built on Sui
+          Deployed on Sui Testnet
         </div>
 
         {/* Headline */}
@@ -43,6 +43,23 @@ export default function Hero() {
             <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
+          </a>
+        </div>
+
+        {/* Milestone Pills */}
+        <div className="animate-fade-in-up animation-delay-600 mt-6 flex flex-wrap items-center justify-center gap-3">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/5 px-3 py-1 text-xs text-emerald-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            Testnet Live
+          </span>
+          <a href="https://github.com/Abojumeji/pacta-core-protocol" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/5 px-3 py-1 text-xs text-accent hover:bg-accent/10 transition-colors">
+            TypeScript SDK
+          </a>
+          <a href="https://pacta.mintlify.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-text-muted hover:text-foreground transition-colors">
+            Docs · pacta.mintlify.app
+          </a>
+          <a href="https://github.com/Abojumeji/pacta-core-protocol" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-text-muted hover:text-foreground transition-colors">
+            Open Source
           </a>
         </div>
 
